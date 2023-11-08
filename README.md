@@ -79,3 +79,6 @@ Strong point is that I can take the data I want in example I want all movies but
             genre
         }
     }
+
+So to start using it with node I need first express server then 2 packages witch are :
+**npm i graphql express-graphql** so first graphql interact with javascript  and express-graphql to interact with express.
