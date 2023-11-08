@@ -71,4 +71,11 @@ When we need it?
             }
         }
     }
-    
+
+Strong point is that I can take the data I want in example I want all movies but from movies I want only name and genre and don't need the id so I can get only the data I need. we type:
+    {
+        movies {
+            name
+            genre
+        }
+    }
