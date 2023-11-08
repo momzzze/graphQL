@@ -18,3 +18,6 @@ Give us flexibility to query for data in a more efficient way.
     Get a single director:
     domain.com/directors/:id
 
+When we need it?
+ when we need to jump in different points on the graph we can get the data and send it back as part of the quest.
+ ![graph image] (./images/graph.png)
