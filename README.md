@@ -82,3 +82,7 @@ Strong point is that I can take the data I want in example I want all movies but
 
 So to start using it with node I need first express server then 2 packages witch are :
 **npm i graphql express-graphql** so first graphql interact with javascript  and express-graphql to interact with express.
+
+add graphqlHTTP from express-graphql
+so we need to pass graphqlHTTP as middleware to the express server and we need schema.
+schema is the structure of the data we want to interact with. So it describe the data.
