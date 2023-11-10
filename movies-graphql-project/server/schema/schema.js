@@ -3,31 +3,7 @@ const _ = require('lodash');
 const Movie = require('../models/movie');
 const Director = require('../models/director');
 
-const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLSchema, GraphQLID, GraphQLList } = graphql;
-
-// const movies = [
-//     { name: 'Pulp Fiction', genre: 'Crime', id: '1', directorId: '1' },
-//     { name: '1984', genre: 'Sci-Fi', id: '2', directorId: '2' },
-//     { name: 'V for vendetta', genre: 'Sci-Fi-Triller', id: '3', directorId: '3' },
-//     { name: 'Snatch', genre: 'Crime-Comedy', id: '4', directorId: '4' },
-//     { name: 'Reservoir Dogs', genre: 'Crime', id: '5', directorId: '1' },
-//     { name: 'The Hateful Eight', genre: 'Crime', id: '6', directorId: '1' },
-//     { name: 'Inglourious Basterds', genre: 'Crime', id: '7', directorId: '1' },
-//     { name: 'Lock, Stock and Two Smoking Barrels', genre: 'Crime-Comedy', id: '8', directorId: '4' },
-//     { name: 'Snatch', genre: 'Crime-Comedy', id: '9', directorId: '4' },
-//     { name: 'Big Nothing', genre: 'Crime-Comedy', id: '10', directorId: '4' },
-//     { name: 'Lucky Number Slevin', genre: 'Crime-Comedy-Drama', id: '11', directorId: '4' },
-//     { name: 'Layer Cake', genre: 'Crime-Comedy-Drama', id: '12', directorId: '4' },
-//     { name: 'The Postman', genre: 'Drama-Sci-Fi', id: '13', directorId: '2' },
-
-
-// ]
-// const directors = [
-//     { name: 'Quentin Tarantino', age: 55, id: '1' },
-//     { name: 'Michael Radford', age: 72, id: '2' },
-//     { name: 'James McTeigue', age: 51, id: '3' },
-//     { name: 'Guy Ritchie', age: 50, id: '4' },
-// ]
+const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLSchema, GraphQLID, GraphQLList, GraphQLNonNull} = graphql;
 
 
 const MovieType = new GraphQLObjectType({
@@ -39,8 +15,7 @@ const MovieType = new GraphQLObjectType({
         director: {
             type: DirectorType,
             resolve(parent, args) {
-                console.log(parent);
-                // return _.find(directors, { id: parent.directorId })
+              return  Director.findById(parent.directorId)
             }
         }
     })
@@ -55,8 +30,7 @@ const DirectorType = new GraphQLObjectType({
         movies: {
             type: new GraphQLList(MovieType),
             resolve(parent, args) {
-                console.log(parent);
-                // return _.filter(movies, { directorId: parent.id })
+               return Movie.find({directorId:parent.id})
             }
         }
     })
@@ -71,6 +45,7 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args) {
                 //get data from database
                 // return _.find(movies, { id: args.id })
+                return Movie.findById(args.id)
             }
         },
         director: {
@@ -78,18 +53,21 @@ const RootQuery = new GraphQLObjectType({
             args: { id: { type: GraphQLID } },
             resolve(parent, args) {
                 // return _.find(directors, { id: args.id })
+                return Director.findById(args.id)
             }
         },
         movies: {
             type: new GraphQLList(MovieType),
             resolve(parent, args) {
                 // return movies
+                return Movie.find({})
             }
         },
         directors: {
             type: new GraphQLList(DirectorType),
             resolve(parent, args) {
                 // return directors
+                return Director.find({})
             }
         }
     })
@@ -101,10 +79,32 @@ const Mutation = new GraphQLObjectType({
         addDirector: {
             type: DirectorType,
             args: {
-                name: { type: GraphQLString },
-                age: { type: GraphQLInt }
+                name: { type: new GraphQLNonNull(GraphQLString) },
+                age: { type: new GraphQLNonNull(GraphQLInt) }
             },
-            
+            resolve(parent, args) {
+                let director = new Director({
+                    name: args.name,
+                    age: args.age
+                })
+                return director.save();
+            }
+        },
+        addMovie: {
+            type: MovieType,
+            args: {
+                name: { type: new GraphQLNonNull(GraphQLString) },
+                genre: { type: new GraphQLNonNull(GraphQLString) },
+                directorId: {type: new GraphQLNonNull(GraphQLID) }
+            },
+            resolve(parent, args) {
+                let movie = new Movie({
+                    name: args.name,
+                    genre: args.genre,
+                    directorId: args.directorId
+                })
+                return movie.save();
+            }
         }
     }
 })
@@ -112,6 +112,7 @@ const Mutation = new GraphQLObjectType({
 
 module.exports = new GraphQLSchema({
     query: RootQuery,
+    mutation: Mutation
 })
 
 //schema: define types define relationships between types
