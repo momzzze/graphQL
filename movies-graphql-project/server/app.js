@@ -2,10 +2,11 @@ const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const schema=require('./schema/schema');
 const mongoose=require('mongoose');
-
+const cors=require('cors');
 
 
 const app = express();
+app.use(cors());
 
 CONNECTION_URL="mongodb+srv://owner:9208143629q@cluster0.zualrka.mongodb.net/";
 mongoose.connect(CONNECTION_URL)
