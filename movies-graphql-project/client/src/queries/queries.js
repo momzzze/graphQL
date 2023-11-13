@@ -28,4 +28,23 @@ const ADD_MOVIE_MUTATION = gql`
     }
 `
 
-export { GET_DIRECTORS, GET_MOVIES, ADD_MOVIE_MUTATION }
+const GET_MOVIE= gql `
+    query($id:ID){
+        movie(id:$id){
+            id
+            name
+            genre
+            director{
+                id
+                name
+                age
+                movies{
+                    name
+                    id
+                }
+            }
+        }
+    }
+`
+
+export { GET_DIRECTORS, GET_MOVIES, ADD_MOVIE_MUTATION, GET_MOVIE }
