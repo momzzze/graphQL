@@ -7,9 +7,9 @@ import ThemeSwitcher from './theme-toggle'
 function Header() {
     const {user} = useUser();
     const router=useRouter()
-    useEffect(() => {
-        console.log(user);
-    }, [user])
+    // useEffect(() => {
+    //     console.log(user);
+    // }, [user])
 
     return (
         <div className='ml-64 p-6 border-b flex items-center justify-between'>
