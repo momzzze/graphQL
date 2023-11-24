@@ -24,3 +24,28 @@ export const getCourseList = async () => {
 
     return await request(MASTER_URL, query)
 }
+
+export const getCourse = async (id) => {
+    const query=gql`
+    query course {
+        courseList(where: {id: "`+id+`"}) {
+          author
+          chapter {
+            ... on Chapter {
+              id
+              name
+              video {
+                url
+              }
+            }
+          }
+          description
+          id
+          name
+          free
+          totalChapters
+        }
+      }
+    `
+    return await request(MASTER_URL,query)
+}

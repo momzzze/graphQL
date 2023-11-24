@@ -1,5 +1,7 @@
+import CoursePreview from '@/app/(Home)/(routes)/course-preview/[courseId]/page';
 import { Book } from 'lucide-react';
 import Image from 'next/image'
+import Link from 'next/link';
 import React from 'react'
 
 const CourseList = ({ courses }) => {
@@ -16,7 +18,9 @@ const CourseList = ({ courses }) => {
         gap-4
         '>
             {courses.map((course, index) => (
-                <div key={index} className='border rounded-lg p-2 cursor-pointer hover:border-purple-600 dark:hover:border-gray-500'>
+                <div key={index} className='border rounded-lg p-2 cursor-pointer hover:border-purple-600 dark:hover:border-gray-500'                
+                >
+                    <Link href={`/course-preview/${course.id}`}>                    
                     <Image
                         src={course.banner.url}
                         height={500}
@@ -32,7 +36,8 @@ const CourseList = ({ courses }) => {
                             <h2 className='text-[12px]'>{course.totalChapters} Chapters</h2>
                         </div>
                         <h2 className='mt-2 text-[14px]'>{course.free?'Free':'Paid'}</h2>
-                    </div>                    
+                    </div>  
+                    </Link>                  
                 </div>
             ))}
         </div>
